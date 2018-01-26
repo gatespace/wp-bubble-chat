@@ -7,7 +7,8 @@
  * Author URI:      https://gatespace.jp/
  * Text Domain:     wp-bubble-chat
  * Domain Path:     /languages
- * License:         GPLv2
+ * License:         GNU General Public License v2 or later
+ * License URI:     LICENSE
  * Version:         0.1.0
  *
  * @package         WP_Bubble_Chat
@@ -32,9 +33,11 @@ private $langs   = '';
 		$this->langs   = $data['langs'];
 
 		$this->post_type = 'wp_bubble_chat';
-		$this->size      = 'wpbc_avatar';
 		$this->meta_key  = 'wpbc_avatar_img';
-		$this->no_image  = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><defs><style>.cls-1{fill:#ccc;}.cls-2{font-size:10px;fill:#fff;font-family:ArialMT, Arial;}</style></defs><title>noimage</title><g id="bg_2" data-name="bg_2"><g id="bg_1" data-name="bg 1"><rect class="cls-1" width="50" height="50"/><text class="cls-2" transform="translate(3.32 28.2)">No Image</text></g></g></svg>';
+		$this->size_name = 'wpbc_avatar';
+		$this->size_w    = 50;
+		$this->size_h    = 50;
+		$this->no_image  = '<div style="width: ' . $this->size_w . 'px; display: inline-block;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><defs><style>.cls-1{fill:#ccc;}.cls-2{font-size:10px;fill:#fff;font-family:ArialMT, Arial;}</style></defs><title>noimage</title><g id="bg_2" data-name="bg_2"><g id="bg_1" data-name="bg 1"><rect class="cls-1" width="50" height="50"/><text class="cls-2" transform="translate(3.32 28.2)">No Image</text></g></g></svg></div>';
 	}
 
 	public function register() {
@@ -48,10 +51,10 @@ private $langs   = '';
 			dirname( plugin_basename( __FILE__ ) ).$this->langs
 		);
 
-		// Set avatar size
+		// Set avatar image size.
 		add_action( 'init', array( $this, 'wpbc_add_image_size' ) );
 
-		// Style for front.
+		// Scripts and styles for the front end.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		// Register WP Bubble Chat setting (Custom Post Type).
@@ -62,26 +65,41 @@ private $langs   = '';
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 
-		// Add Shortcode
+		// Add WP Bubble Chat shortcode
 		add_shortcode( 'chat', array( $this, 'wpbc_add_shortcode' ), 10, 2 );
 
-		// Add column in WP Bubble Chat avatar list.
+		// Add column the WP Bubble Chat list table.
 		add_filter( 'manage_' . $this->post_type . '_posts_columns', array( $this, 'add_wpbc_posts_columns' ), 10, 1 );
 		add_action( 'manage_' . $this->post_type . '_posts_custom_column', array( $this, 'add_wpbc_posts_columns_callback' ), 10, 2 );
 
+		// Print shortcode after the title field.
 		add_action( 'edit_form_after_title', array( $this, 'view_shortcode_edit_form_after_title' ), 10, 2 );
 
 	}
 
-	// Set avatar size.
+	/**
+	 * Set avatar image size.
+	 */
 	public function wpbc_add_image_size() {
-		add_image_size( $this->size, 50, 50, true );
+		add_image_size( $this->size_name, $this->size_w, $this->size_h, true );
 	}
 
-	// Get avatar image.
-	public function wpbc_avatar_image( $post_id, $size = '' ) {
-		$size    = $this->size;
-		$default = apply_filters( 'wpbc_avatar_default', $this->no_image );
+	/**
+	 * Get avatar image.
+	 * 
+	 * @param int $post_id Image attachment ID.
+	 * @param string|array $size Optional. Image size. Accepts any valid image size, or an array of width
+866	 *                           and height values in pixels (in that order). Default 'wpbc_avatar'.
+	 * @return string HTML img element.
+	 */
+	public function wpbc_avatar_image( $post_id, $size ) {
+		// Default avatar size.
+		if ( empty( empty( $size ) ) ) {
+			$size    = apply_filters( 'wpbc_avatar_default_size', $this->size_name );
+		}
+
+		// Default avatar image.
+		$default = apply_filters( 'wpbc_avatar_default_image', $this->no_image );
 		
 		// WPBC Post ID no set.
 		if ( empty( $post_id ) ) {
@@ -93,20 +111,24 @@ private $langs   = '';
 			return $default;
 		}
 		
-		// check post_meta(avatar image id)
+		// Check post_meta( $this->meta_key ).
 		$avatar_id = get_post_meta( $post_id, $this->meta_key, true );
 		if ( empty( $avatar_id ) ) {
 			return $default;
 		}
 
+		// Get avatar image.
 		$avatar_img = wp_get_attachment_image( $avatar_id, $size );
+		if ( empty( $avatar_img ) ) {
+			return $avatar_img
+		}
 
-		return $avatar_img;
+		return $default;
 	}
 
-	// Get avatar image.
-
-	// Style
+	/*
+	 * Scripts and styles for the front end.
+	 */
 	public function wp_enqueue_scripts() {
 		wp_enqueue_style(
 			'wp-bubble-chat',
@@ -116,7 +138,9 @@ private $langs   = '';
 		);
 	}
 
-	// Register WP Bubble Chat setting (Custom Post Type).
+	/*
+	 * Register WP Bubble Chat setting (Custom Post Type).
+	 */
 	public function wpbc_register_post_type() {
 	
 		$labels = array(
@@ -169,7 +193,6 @@ private $langs   = '';
 			'show_in_rest'          => false,
 		);
 		register_post_type( $this->post_type, $args );
-	
 	}
 
 	/**
@@ -207,10 +230,6 @@ private $langs   = '';
 	 
 		if( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
 	 
-			// $image_attributes[0] - image URL
-			// $image_attributes[1] - image width
-			// $image_attributes[2] - image height
-	 
 			$image = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
 			$display = 'inline-block';
 	 
@@ -225,6 +244,9 @@ private $langs   = '';
 
 	}
 
+	/*
+	 * Scripts and styles for the wp-bubble-chat edit screen.
+	 */
 	public function admin_enqueue_scripts() {
 		if ( ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
@@ -281,35 +303,51 @@ private $langs   = '';
 		update_post_meta( $post_id, $this->meta_key, $meta_data );
 	}
 
-	// Add column in WP Bubble Chat avatar list.
+	/*
+	 * Add column the WP Bubble Chat list table.
+	 *
+	 * @param array $columns An array of column names.
+	 * @return array An array of column names.
+	 */
 	public function add_wpbc_posts_columns( $columns ) {
 		$new_columns = array();
 		foreach ( $columns as $column_name => $column_display_name ) {
 			if ( $column_name == 'title' ) {
 				$new_columns['avatar'] = __( 'Avatar', 'wp-bubble-chat' );
 			} elseif ( $column_name == 'date' ) {
-				$new_columns['bubble_chat_code'] = __( 'Short code', 'wp-bubble-chat' );
+				$new_columns['bubble_chat_code'] = __( 'Shortcode', 'wp-bubble-chat' );
 			}
 			$new_columns[ $column_name ] = $column_display_name;
 		}   
 		return $new_columns;
 	}
 
+	/*
+	 * Add data in each custom column in the the WP Bubble Chat list table.
+	 *
+	 * @param string $column  The name of the column to display.
+	 * @param int    $post_id The current post ID.
+	 */
 	public function add_wpbc_posts_columns_callback( $column, $post_id ) {
 	    switch ( $column ) {
 	        case 'avatar' : 
 				// Avatar image
-				$avatar_img = $this->wpbc_avatar_image( $post_id, $this->size );
-	            echo '<div style="width: 50px;">' . $avatar_img . '</div>'; 
+				$avatar_img = $this->wpbc_avatar_image( $post_id, $this->size_name );
+	            echo $avatar_img; 
 	            break;
 	        case 'bubble_chat_code' : 
-				// Chat chortcode
+				// Chat shortcode
 				echo $this->wpbc_print_shortcode( $post_id );
 	            break;
 	
 	    }
 	}
 	
+	/*
+	 * Print shortcode after the title field.
+	 *
+	 * @param WP_Post $post Post object.
+	 */
 	public function view_shortcode_edit_form_after_title( $post ) {
 		if ( $post->post_type != $this->post_type )
 			return;
@@ -317,7 +355,13 @@ private $langs   = '';
 		echo $this->wpbc_print_shortcode( $post->ID );
 	}
 
-	// Add shortcode
+	/*
+	 * Add WP Bubble Chat shortcode.
+	 *
+	 * @param array  $atts    Shortcode attributes.
+	 * @param string $content Enclosed content.
+	 * @return string HTML WP Bubble Chat ciontent.
+	 */
 	public function wpbc_add_shortcode( $atts, $content = null ) {
 	
 		// Attributes
@@ -330,13 +374,8 @@ private $langs   = '';
 			$atts
 		) );
 		
-		if ( empty( $icon ) ) {
-			return;
-		}
-	
-		$html = '';
-
-		$size = apply_filters( 'wpbc_avatar_size', $this->size );
+		// Avatar size
+		$size = apply_filters( 'wpbc_avatar_size', $this->size_name );
 
 		// Avatar image
 		$avatar_img = $this->wpbc_avatar_image( $icon, $size );
@@ -344,6 +383,8 @@ private $langs   = '';
 		// Avatar name
 		$avatar_name = apply_filters( 'the_title', $name );
 
+		// Output
+		$html  = '';
 		$html .= '<div class="wpbc-outer wpbc-pos-' . $pos . '">' . "\n";
 		$html .= '<div class="wpbc-avatar">' . "\n";
 		$html .= '<div class="wpbc-avatar-image">' . $avatar_img . '</div>' . "\n";
@@ -356,7 +397,11 @@ private $langs   = '';
 	
 	}
 
-	// Print chat shortcode.
+	/*
+	 * Print WP Bubble Chat shortcode.
+	 *
+	 * @param int $post_id WP Bubble Chat ID.
+	 */
 	public function wpbc_print_shortcode( $post_id ) {
 		
 		if ( empty( $post_id ) ) {
