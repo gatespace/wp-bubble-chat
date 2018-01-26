@@ -96,10 +96,20 @@ private $langs   = '';
 	public function wpbc_avatar_image( $post_id, $size ) {
 		// Default avatar size.
 		if ( empty( empty( $size ) ) ) {
-			$size    = apply_filters( 'wpbc_avatar_default_size', $this->size_name );
+			/**
+			 * Filters the avatar default size.
+			 *
+			 * @param string $size_name Size of avatar default image.
+			 */
+			$size = apply_filters( 'wpbc_avatar_default_size', $this->size_name );
 		}
 
 		// Default avatar image.
+		/**
+		 * Filters the avatar default image tag.
+		 *
+		 * @param HTML $no_image Avatar default image.
+		 */
 		$default = apply_filters( 'wpbc_avatar_default_image', $this->no_image );
 		
 		// WPBC Post ID no set.
@@ -228,7 +238,7 @@ private $langs   = '';
 		$image      = ' button">Upload image';
 		$image_size = 'post-thumbnails';
 		$display    = 'none';
-	 
+
 		if( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
 	 
 			$image = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
@@ -252,14 +262,14 @@ private $langs   = '';
 		if ( ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
-	 
-	 	wp_enqueue_script(
-	 		'wp-bubble-chat-uploads',
+	
+		wp_enqueue_script(
+			'wp-bubble-chat-uploads',
 			plugins_url( 'js/customscript.js', __FILE__ ),
-	 		array( 'jquery' ),
-	 		$this->version,
-	 		false
-	 	);
+			array( 'jquery' ),
+			$this->version,
+			false
+		);
 	}
 
 	/**
@@ -330,18 +340,18 @@ private $langs   = '';
 	 * @param int    $post_id The current post ID.
 	 */
 	public function add_wpbc_posts_columns_callback( $column, $post_id ) {
-	    switch ( $column ) {
-	        case 'avatar' : 
+		switch ( $column ) {
+			case 'avatar' : 
 				// Avatar image
 				$avatar_img = $this->wpbc_avatar_image( $post_id, $this->size_name );
-	            echo $avatar_img; 
-	            break;
-	        case 'bubble_chat_code' : 
+				echo $avatar_img; 
+				break;
+			case 'bubble_chat_code' : 
 				// Chat shortcode
 				echo $this->wpbc_print_shortcode( $post_id );
-	            break;
+				break;
 	
-	    }
+		}
 	}
 	
 	/*
@@ -361,21 +371,28 @@ private $langs   = '';
 	 *
 	 * @param array  $atts    Shortcode attributes.
 	 * @param string $content Enclosed content.
-	 * @return string HTML WP Bubble Chat ciontent.
+	 * @return string HTML WP Bubble Chat content.
 	 */
 	public function wpbc_add_shortcode( $atts, $content = null ) {
-	
+
 		// Attributes
 		extract( shortcode_atts(
 			array(
-				'icon'   => '0',
+				'icon' => '0',
 				'name' => '',
 				'pos'  => 'l',
 			),
 			$atts
 		) );
-		
+
 		// Avatar size
+		/**
+		 * Filters the avatar size for output.
+		 *
+		 * @param string|array $size_name Size of avatar image.
+		 *                                Avatar image size or array of width and height values (in that order). 
+		 *                                Default 'wpbc_avatar'.
+		 */
 		$size = apply_filters( 'wpbc_avatar_size', $this->size_name );
 
 		// Avatar image
@@ -394,8 +411,17 @@ private $langs   = '';
 		$html .= '<div class="wpbc-avatar-text"><div class="wpbc-avatar-text-inner">' . $content . '</div></div>' . "\n";
 		$html .= '</div><!-- //.wpbc-outer -->' . "\n";
 	
+		/**
+		 * Filters the shortcode result.
+		 *
+		 * @param HTML   $html       Output html code.
+		 * @param string $pos        Css class for avatar image position.
+		 * @param HTML   $avatar_img Avatar image html code.
+		 * @param string $name       Avatar name.
+		 * @param HTML   $content    Inner content.
+		 */
 		return apply_filters( 'wpbc_output', $html, $pos, $avatar_img, $name, $content );
-	
+
 	}
 
 	/*
@@ -404,7 +430,7 @@ private $langs   = '';
 	 * @param int $post_id WP Bubble Chat ID.
 	 */
 	public function wpbc_print_shortcode( $post_id ) {
-		
+
 		if ( empty( $post_id ) ) {
 			return;
 		}
