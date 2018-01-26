@@ -88,8 +88,9 @@ private $langs   = '';
 	 * Get avatar image.
 	 * 
 	 * @param int $post_id Image attachment ID.
-	 * @param string|array $size Optional. Image size. Accepts any valid image size, or an array of width
-866	 *                           and height values in pixels (in that order). Default 'wpbc_avatar'.
+	 * @param string|array $size Optional. Image size. Accepts any valid image size,
+	 *                           or an array of width and height values in pixels (in that order).
+	 *                           Default 'wpbc_avatar'.
 	 * @return string HTML img element.
 	 */
 	public function wpbc_avatar_image( $post_id, $size ) {
