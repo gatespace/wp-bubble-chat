@@ -120,8 +120,8 @@ private $langs   = '';
 
 		// Get avatar image.
 		$avatar_img = wp_get_attachment_image( $avatar_id, $size );
-		if ( empty( $avatar_img ) ) {
-			return $avatar_img
+		if ( ! empty( $avatar_img ) ) {
+			return $avatar_img;
 		}
 
 		return $default;
