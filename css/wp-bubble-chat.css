@@ -47,7 +47,7 @@
 }
 
 .wpbc-pos-l .wpbc-avatar-text-inner {
-	background: #dddddd;
+	background: #ffffff;
 	border-color: #cccccc;
 }
 .wpbc-pos-l .wpbc-avatar-text-inner:after, .wpbc-pos-l .wpbc-avatar-text-inner:before {
@@ -55,7 +55,7 @@
 }
 .wpbc-pos-l .wpbc-avatar-text-inner:after {
 	border-color: rgba(221, 221, 221, 0);
-	border-right-color: #dddddd;
+	border-right-color: #ffffff;
 	border-width: 15px;
 	margin-top: -15px;
 }
@@ -67,7 +67,7 @@
 }
 
 .wpbc-pos-r .wpbc-avatar-text-inner {
-	background: #fff4ed;
+	background: #ffffff;
 	border-color: #ffcca6;
 }
 .wpbc-pos-r .wpbc-avatar-text-inner:after, .wpbc-pos-r .wpbc-avatar-text-inner:before {
@@ -76,7 +76,7 @@
 
 .wpbc-pos-r .wpbc-avatar-text-inner:after {
 	border-color: rgba(255, 244, 237, 0);
-	border-left-color: #fff4ed;
+	border-left-color: #ffffff;
 	border-width: 15px;
 	margin-top: -15px;
 }

@@ -1,0 +1,175 @@
+# Copyright (C) 2018 gatespace
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Bubble Chat 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-bubble-chat\n"
+"POT-Creation-Date: 2018-06-12 11:15:28+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: wp-bubble-chat.php:184 wp-bubble-chat.php:185
+msgid "Chat avatar"
+msgstr ""
+
+#: wp-bubble-chat.php:186
+msgid "Item Archives"
+msgstr ""
+
+#: wp-bubble-chat.php:187
+msgid "Item Attributes"
+msgstr ""
+
+#: wp-bubble-chat.php:188
+msgid "Parent Item:"
+msgstr ""
+
+#: wp-bubble-chat.php:189
+msgid "All Items"
+msgstr ""
+
+#: wp-bubble-chat.php:190
+msgid "Add New Item"
+msgstr ""
+
+#: wp-bubble-chat.php:191
+msgid "Add New"
+msgstr ""
+
+#: wp-bubble-chat.php:192
+msgid "New Item"
+msgstr ""
+
+#: wp-bubble-chat.php:193
+msgid "Edit Item"
+msgstr ""
+
+#: wp-bubble-chat.php:194
+msgid "Update Item"
+msgstr ""
+
+#: wp-bubble-chat.php:195
+msgid "View Item"
+msgstr ""
+
+#: wp-bubble-chat.php:196
+msgid "View Items"
+msgstr ""
+
+#: wp-bubble-chat.php:197
+msgid "Search Item"
+msgstr ""
+
+#: wp-bubble-chat.php:198
+msgid "Not found"
+msgstr ""
+
+#: wp-bubble-chat.php:199
+msgid "Not found in Trash"
+msgstr ""
+
+#: wp-bubble-chat.php:200 wp-bubble-chat.php:239
+msgid "Avatar Image"
+msgstr ""
+
+#: wp-bubble-chat.php:201
+msgid "Set avatar image"
+msgstr ""
+
+#: wp-bubble-chat.php:202 wp-bubble-chat.php:277
+msgid "Remove avatar image"
+msgstr ""
+
+#: wp-bubble-chat.php:203
+msgid "Use as avatar image"
+msgstr ""
+
+#: wp-bubble-chat.php:204
+msgid "Insert into item"
+msgstr ""
+
+#: wp-bubble-chat.php:205
+msgid "Uploaded to this item"
+msgstr ""
+
+#: wp-bubble-chat.php:206
+msgid "Items list"
+msgstr ""
+
+#: wp-bubble-chat.php:207
+msgid "Items list navigation"
+msgstr ""
+
+#: wp-bubble-chat.php:208
+msgid "Filter items list"
+msgstr ""
+
+#: wp-bubble-chat.php:211
+msgid "Chat avatars"
+msgstr ""
+
+#: wp-bubble-chat.php:212
+msgid "WP Bubble Chat setting."
+msgstr ""
+
+#: wp-bubble-chat.php:263
+msgid "Upload image"
+msgstr ""
+
+#: wp-bubble-chat.php:354
+msgid "Avatar"
+msgstr ""
+
+#: wp-bubble-chat.php:356
+msgid "Shortcode"
+msgstr ""
+
+#: wp-bubble-chat.php:468
+msgid "Chat text."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP Bubble Chat"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/gatespace/wp-bubble-chat"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Embed a simple bubble chat in the content."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "gatespace"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://gatespace.jp/"
+msgstr ""
+
+#: wp-bubble-chat.php:182
+msgctxt "Post Type General Name"
+msgid "Chat avatars"
+msgstr ""
+
+#: wp-bubble-chat.php:183
+msgctxt "Post Type Singular Name"
+msgid "Chat avatar"
+msgstr ""

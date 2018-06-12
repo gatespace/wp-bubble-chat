@@ -14,16 +14,34 @@
  * @package         WP_Bubble_Chat
  */
 
-define( 'WP_Bubble_Chat_URL',  plugins_url( '', __FILE__ ) );
-define( 'WP_Bubble_Chat_PATH', dirname( __FILE__ ) );
+define( 'WP_BUBBLE_CHAT_URL',  plugins_url( '', __FILE__ ) );
+define( 'WP_BUBBLE_CHAT_PATH', dirname( __FILE__ ) );
 
 $wp_bubble_chat = new WP_Bubble_Chat();
 $wp_bubble_chat->register();
 
+/**
+ * WP_Bubble_Chat class.
+ */
 class WP_Bubble_Chat {
-private $version = '';
-private $langs   = '';
 
+	/**
+	 * Plugin version
+	 *
+	 * @var string
+	 */
+	private $version;
+
+	/**
+	 * Plugin languages directory
+	 *
+	 * @var string
+	 */
+	private $langs;
+
+	/**
+	 * Construct.
+	 */
 	function __construct() {
 		$data = get_file_data(
 			__FILE__,
@@ -37,18 +55,24 @@ private $langs   = '';
 		$this->size_name = 'wpbc_avatar';
 		$this->size_w    = 50;
 		$this->size_h    = 50;
-		$this->no_image  = '<div style="width: ' . $this->size_w . 'px; display: inline-block;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><defs><style>.cls-1{fill:#ccc;}.cls-2{font-size:10px;fill:#fff;font-family:ArialMT, Arial;}</style></defs><title>noimage</title><g id="bg_2" data-name="bg_2"><g id="bg_1" data-name="bg 1"><rect class="cls-1" width="50" height="50"/><text class="cls-2" transform="translate(3.32 28.2)">No Image</text></g></g></svg></div>';
+		$this->no_image  = '<img src="' . plugins_url( 'images/no-image.png', __FILE__ ) . '" alt="No Image" style="width: 50px;">';
 	}
 
+	/**
+	 * Register.
+	 */
 	public function register() {
 		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 	}
 
+	/**
+	 * Plugin loaded.
+	 */
 	public function plugins_loaded() {
 		load_plugin_textdomain(
 			'wp-bubble-chat',
 			false,
-			dirname( plugin_basename( __FILE__ ) ).$this->langs
+			dirname( plugin_basename( __FILE__ ) ) . $this->langs
 		);
 
 		// Set avatar image size.
@@ -60,12 +84,12 @@ private $langs   = '';
 		// Register WP Bubble Chat setting (Custom Post Type).
 		add_action( 'init', array( $this, 'wpbc_register_post_type' ), 0 );
 
-		// Add meta box
+		// Add meta box.
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 
-		// Add WP Bubble Chat shortcode
+		// Add WP Bubble Chat shortcode.
 		add_shortcode( 'chat', array( $this, 'wpbc_add_shortcode' ), 10, 2 );
 
 		// Add column the WP Bubble Chat list table.
@@ -86,8 +110,8 @@ private $langs   = '';
 
 	/**
 	 * Get avatar image.
-	 * 
-	 * @param int $post_id Image attachment ID.
+	 *
+	 * @param int          $post_id Image attachment ID.
 	 * @param string|array $size Optional. Image size. Accepts any valid image size,
 	 *                           or an array of width and height values in pixels (in that order).
 	 *                           Default 'wpbc_avatar'.
@@ -111,17 +135,17 @@ private $langs   = '';
 		 * @param HTML $no_image Avatar default image.
 		 */
 		$default = apply_filters( 'wpbc_avatar_default_image', $this->no_image );
-		
+
 		// WPBC Post ID no set.
 		if ( empty( $post_id ) ) {
 			return $default;
 		}
 
 		// WPBC post status is not 'publish'.
-		if ( get_post_status( $post_id ) != 'publish' ) {
+		if ( get_post_status( $post_id ) !== 'publish' ) {
 			return $default;
 		}
-		
+
 		// Check post_meta( $this->meta_key ).
 		$avatar_id = get_post_meta( $post_id, $this->meta_key, true );
 		if ( empty( $avatar_id ) ) {
@@ -137,7 +161,7 @@ private $langs   = '';
 		return $default;
 	}
 
-	/*
+	/**
 	 * Scripts and styles for the front end.
 	 */
 	public function wp_enqueue_scripts() {
@@ -149,11 +173,11 @@ private $langs   = '';
 		);
 	}
 
-	/*
+	/**
 	 * Register WP Bubble Chat setting (Custom Post Type).
 	 */
 	public function wpbc_register_post_type() {
-	
+
 		$labels = array(
 			'name'                  => _x( 'Chat avatars', 'Post Type General Name', 'wp-bubble-chat' ),
 			'singular_name'         => _x( 'Chat avatar', 'Post Type Singular Name', 'wp-bubble-chat' ),
@@ -222,47 +246,47 @@ private $langs   = '';
 
 	/**
 	 * Prints the box content.
-	 * 
+	 *
 	 * @param WP_Post $post The object for the current post.
 	 */
 	public function wpbc_metabox_callback( $post ) {
 		// Add a nonce field so we can check for it later.
 		wp_nonce_field( 'wpbc_save_meta_box_data', 'wpbc_meta_box_nonce' );
 
-		/*
+		/**
 		 * Use get_post_meta() to retrieve an existing value
 		 * from the database and use the value for the form.
 		 */
 		$value = get_post_meta( $post->ID, $this->meta_key, true );
 
-		$image      = ' button">Upload image';
-		$image_size = 'post-thumbnails';
-		$display    = 'none';
+		$image_class = 'wpbc_upload_image_button button';
+		$image_item  = esc_html__( 'Upload image', 'wp-bubble-chat' );
+		$image_size  = 'thumbnail';
+		$display     = 'none';
 
-		if( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
-	 
-			$image = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
-			$display = 'inline-block';
-	 
-		} 
+		if ( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
+			$image_class = 'wpbc_upload_image_button';
+			$image_item  = '<img src="' . esc_attr( $image_attributes[0] ) . '" style="max-width:95%;display:block;" />';
+			$display     = 'inline-block';
+		}
 
 		echo '
 		<div>
-			<a href="#" class="wpbc_upload_image_button' . $image . '</a>
-			<input type="hidden" name="' . $this->meta_key . '" id="' . $this->meta_key . '" value="' . $value . '" />
-			<a href="#" class="wpbc_remove_image_button" style="display:inline-block;display:' . $display . '">' .  __( 'Remove avatar image', 'wp-bubble-chat' ) . '</a>
+			<a href="#" class="' . sanitize_html_class( $image_class ) . '">' . wp_kses_post( $image_item ) . '</a>
+			<input type="hidden" name="' . esc_attr( $this->meta_key ) . '" id="' . esc_attr( $this->meta_key ) . '" value="' . esc_attr( $value ) . '" />
+			<a href="#" class="wpbc_remove_image_button" style="display:inline-block;display:' . esc_attr( $display ) . '">' . esc_html__( 'Remove avatar image', 'wp-bubble-chat' ) . '</a>
 		</div>';
 
 	}
 
-	/*
+	/**
 	 * Scripts and styles for the wp-bubble-chat edit screen.
 	 */
 	public function admin_enqueue_scripts() {
 		if ( ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
-	
+
 		wp_enqueue_script(
 			'wp-bubble-chat-uploads',
 			plugins_url( 'js/customscript.js', __FILE__ ),
@@ -280,41 +304,44 @@ private $langs   = '';
 	public function save_post( $post_id ) {
 
 		// Check if our nonce is set.
-		if ( ! isset( $_POST['wpbc_meta_box_nonce'] ) ) {
+		$wpbc_meta_box_nonce = filter_input( INPUT_POST, 'wpbc_meta_box_nonce' );
+		if ( ! isset( $wpbc_meta_box_nonce ) ) {
 			return;
 		}
-	
+
 		// Verify that the nonce is valid.
-		if ( ! wp_verify_nonce( $_POST['wpbc_meta_box_nonce'], 'wpbc_save_meta_box_data' ) ) {
+		if ( ! wp_verify_nonce( $wpbc_meta_box_nonce ) ) {
 			return;
 		}
-	
+
 		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 
 		// Check the user's permissions.
-		if ( isset( $_POST['post_type'] ) && 'wp_bubble_chat' == $_POST['post_type'] ) {
+		$wpbc_post_type = filter_input( INPUT_POST, 'post_type' );
+		if ( isset( $wpbc_post_type ) && 'wp_bubble_chat' === $wpbc_post_type ) {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
 		}
 
 		/* OK, it's safe for us to save the data now. */
-		if ( ! isset( $_POST[$this->meta_key] ) ) {
+		$wpbc_meta_value = filter_input( INPUT_POST, $this->meta_key );
+		if ( ! isset( $wpbc_meta_value ) ) {
 			delete_post_meta( $post_id, $this->meta_key );
 			return;
 		}
 
 		// Sanitize user input.
-		$meta_data = absint( $_POST[$this->meta_key] );
+		$meta_data = absint( $wpbc_meta_value );
 
 		// Update the meta field in the database.
 		update_post_meta( $post_id, $this->meta_key, $meta_data );
 	}
 
-	/*
+	/**
 	 * Add column the WP Bubble Chat list table.
 	 *
 	 * @param array $columns An array of column names.
@@ -323,17 +350,17 @@ private $langs   = '';
 	public function add_wpbc_posts_columns( $columns ) {
 		$new_columns = array();
 		foreach ( $columns as $column_name => $column_display_name ) {
-			if ( $column_name == 'title' ) {
+			if ( 'title' === $column_name  ) {
 				$new_columns['avatar'] = __( 'Avatar', 'wp-bubble-chat' );
-			} elseif ( $column_name == 'date' ) {
+			} elseif ( 'date' === $column_name ) {
 				$new_columns['bubble_chat_code'] = __( 'Shortcode', 'wp-bubble-chat' );
 			}
 			$new_columns[ $column_name ] = $column_display_name;
-		}   
+		}
 		return $new_columns;
 	}
 
-	/*
+	/**
 	 * Add data in each custom column in the the WP Bubble Chat list table.
 	 *
 	 * @param string $column  The name of the column to display.
@@ -341,32 +368,32 @@ private $langs   = '';
 	 */
 	public function add_wpbc_posts_columns_callback( $column, $post_id ) {
 		switch ( $column ) {
-			case 'avatar' : 
-				// Avatar image
-				$avatar_img = $this->wpbc_avatar_image( $post_id, $this->size_name );
-				echo $avatar_img; 
+			case 'avatar' :
+				// Avatar image.
+				echo wp_kses_post( $this->wpbc_avatar_image( $post_id, $this->size_name ) );
 				break;
-			case 'bubble_chat_code' : 
-				// Chat shortcode
-				echo $this->wpbc_print_shortcode( $post_id );
+			case 'bubble_chat_code' :
+				// Chat shortcode.
+				echo wp_kses_post( $this->wpbc_print_shortcode( $post_id ) );
 				break;
-	
+
 		}
 	}
-	
-	/*
+
+	/**
 	 * Print shortcode after the title field.
 	 *
 	 * @param WP_Post $post Post object.
 	 */
 	public function view_shortcode_edit_form_after_title( $post ) {
-		if ( $post->post_type != $this->post_type )
+		if ( $post->post_type !== $this->post_type ) {
 			return;
+		}
 
-		echo $this->wpbc_print_shortcode( $post->ID );
+		echo wp_kses_post( $this->wpbc_print_shortcode( $post->ID ) );
 	}
 
-	/*
+	/**
 	 * Add WP Bubble Chat shortcode.
 	 *
 	 * @param array  $atts    Shortcode attributes.
@@ -375,42 +402,45 @@ private $langs   = '';
 	 */
 	public function wpbc_add_shortcode( $atts, $content = null ) {
 
-		// Attributes
-		extract( shortcode_atts(
+		// Attributes.
+		$args = shortcode_atts(
 			array(
 				'icon' => '0',
 				'name' => '',
 				'pos'  => 'l',
 			),
 			$atts
-		) );
+		);
+		$icon = (int) $args['icon'];
+		$name = $args['name'];
+		$pos  = $args['pos'];
 
-		// Avatar size
+		// Avatar size.
 		/**
 		 * Filters the avatar size for output.
 		 *
 		 * @param string|array $size_name Size of avatar image.
-		 *                                Avatar image size or array of width and height values (in that order). 
+		 *                                Avatar image size or array of width and height values (in that order).
 		 *                                Default 'wpbc_avatar'.
 		 */
 		$size = apply_filters( 'wpbc_avatar_size', $this->size_name );
 
-		// Avatar image
+		// Avatar image.
 		$avatar_img = $this->wpbc_avatar_image( $icon, $size );
 
-		// Avatar name
+		// Avatar name.
 		$avatar_name = apply_filters( 'the_title', $name );
 
-		// Output
+		// Output.
 		$html  = '';
 		$html .= '<div class="wpbc-outer wpbc-pos-' . $pos . '">' . "\n";
 		$html .= '<div class="wpbc-avatar">' . "\n";
 		$html .= '<div class="wpbc-avatar-image">' . $avatar_img . '</div>' . "\n";
 		$html .= '<div class="wpbc-avatar-name">' . $avatar_name . '</div>' . "\n";
 		$html .= '</div>' . "\n";
-		$html .= '<div class="wpbc-avatar-text"><div class="wpbc-avatar-text-inner">' . $content . '</div></div>' . "\n";
+		$html .= '<div class="wpbc-avatar-text"><div class="wpbc-avatar-text-inner">' . do_shortcode( $content ) . '</div></div>' . "\n";
 		$html .= '</div><!-- //.wpbc-outer -->' . "\n";
-	
+
 		/**
 		 * Filters the shortcode result.
 		 *
@@ -424,7 +454,7 @@ private $langs   = '';
 
 	}
 
-	/*
+	/**
 	 * Print WP Bubble Chat shortcode.
 	 *
 	 * @param int $post_id WP Bubble Chat ID.
@@ -435,7 +465,7 @@ private $langs   = '';
 			return;
 		}
 
-		echo '<code>[chat icon="' . $post_id . '" name="' . get_the_title( $post_id ). '" pos="l|r"]' . __( 'Chat text.', 'wp-bubble-chat' ) . '[/chat]</code>'; 
+		echo '<code>[chat icon="' . esc_html( $post_id ) . '" name="' . get_the_title( $post_id ) . '" pos="l|r"]' . esc_html__( 'Chat text.', 'wp-bubble-chat' ) . '[/chat]</code>';
 
 	}
 
