@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Bubble Chat 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-bubble-chat\n"
-"POT-Creation-Date: 2018-06-12 11:15:28+00:00\n"
+"POT-Creation-Date: 2018-06-13 03:56:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,118 +29,58 @@ msgid "Chat avatar"
 msgstr ""
 
 #: wp-bubble-chat.php:186
-msgid "Item Archives"
-msgstr ""
-
-#: wp-bubble-chat.php:187
-msgid "Item Attributes"
-msgstr ""
-
-#: wp-bubble-chat.php:188
-msgid "Parent Item:"
-msgstr ""
-
-#: wp-bubble-chat.php:189
 msgid "All Items"
 msgstr ""
 
-#: wp-bubble-chat.php:190
-msgid "Add New Item"
-msgstr ""
-
-#: wp-bubble-chat.php:191
+#: wp-bubble-chat.php:187
 msgid "Add New"
 msgstr ""
 
-#: wp-bubble-chat.php:192
+#: wp-bubble-chat.php:188
 msgid "New Item"
 msgstr ""
 
-#: wp-bubble-chat.php:193
-msgid "Edit Item"
-msgstr ""
-
-#: wp-bubble-chat.php:194
-msgid "Update Item"
-msgstr ""
-
-#: wp-bubble-chat.php:195
-msgid "View Item"
-msgstr ""
-
-#: wp-bubble-chat.php:196
-msgid "View Items"
-msgstr ""
-
-#: wp-bubble-chat.php:197
+#: wp-bubble-chat.php:189
 msgid "Search Item"
 msgstr ""
 
-#: wp-bubble-chat.php:198
+#: wp-bubble-chat.php:190
 msgid "Not found"
 msgstr ""
 
-#: wp-bubble-chat.php:199
+#: wp-bubble-chat.php:191
 msgid "Not found in Trash"
 msgstr ""
 
-#: wp-bubble-chat.php:200 wp-bubble-chat.php:239
-msgid "Avatar Image"
-msgstr ""
-
-#: wp-bubble-chat.php:201
-msgid "Set avatar image"
-msgstr ""
-
-#: wp-bubble-chat.php:202 wp-bubble-chat.php:277
-msgid "Remove avatar image"
-msgstr ""
-
-#: wp-bubble-chat.php:203
-msgid "Use as avatar image"
-msgstr ""
-
-#: wp-bubble-chat.php:204
-msgid "Insert into item"
-msgstr ""
-
-#: wp-bubble-chat.php:205
-msgid "Uploaded to this item"
-msgstr ""
-
-#: wp-bubble-chat.php:206
-msgid "Items list"
-msgstr ""
-
-#: wp-bubble-chat.php:207
-msgid "Items list navigation"
-msgstr ""
-
-#: wp-bubble-chat.php:208
-msgid "Filter items list"
-msgstr ""
-
-#: wp-bubble-chat.php:211
+#: wp-bubble-chat.php:194
 msgid "Chat avatars"
 msgstr ""
 
-#: wp-bubble-chat.php:212
-msgid "WP Bubble Chat setting."
+#: wp-bubble-chat.php:195
+msgid "WP Bubble Chat settings."
 msgstr ""
 
-#: wp-bubble-chat.php:263
+#: wp-bubble-chat.php:222
+msgid "Avatar Image"
+msgstr ""
+
+#: wp-bubble-chat.php:246
 msgid "Upload image"
 msgstr ""
 
-#: wp-bubble-chat.php:354
+#: wp-bubble-chat.php:260
+msgid "Remove avatar image"
+msgstr ""
+
+#: wp-bubble-chat.php:337
 msgid "Avatar"
 msgstr ""
 
-#: wp-bubble-chat.php:356
+#: wp-bubble-chat.php:339
 msgid "Shortcode"
 msgstr ""
 
-#: wp-bubble-chat.php:468
+#: wp-bubble-chat.php:460
 msgid "Chat text."
 msgstr ""
 

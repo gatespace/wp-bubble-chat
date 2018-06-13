@@ -3,10 +3,10 @@
 Donate link: 
 **Tags:** chat, content, bubble chat  
 **Requires at least:** 4.7.0  
-**Tested up to:** 4.9.2  
+**Tested up to:** 4.9.6  
 **Stable tag:** 0.1.0  
 **License:** GNU General Public License v2 or later  
-**License URI:** LICENSE  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 Embed a simple bubble chat in the content.
 
