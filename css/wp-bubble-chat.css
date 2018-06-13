@@ -10,7 +10,6 @@
 }
 
 .wpbc-avatar {
-	width: 50px;
 }
 .wpbc-pos-l .wpbc-avatar {
 	float: left;
@@ -35,6 +34,7 @@
 	padding: 1em;
 	border-style: solid;
 	border-width: 2px;
+	border-radius: 10px;
 }
 .wpbc-avatar-text-inner:after, .wpbc-avatar-text-inner:before {
 	top: 30px;
@@ -54,7 +54,7 @@
 	right: 100%;
 }
 .wpbc-pos-l .wpbc-avatar-text-inner:after {
-	border-color: rgba(221, 221, 221, 0);
+	border-color: rgba(255, 255, 255, 0);
 	border-right-color: #ffffff;
 	border-width: 15px;
 	margin-top: -15px;
@@ -75,7 +75,7 @@
 }
 
 .wpbc-pos-r .wpbc-avatar-text-inner:after {
-	border-color: rgba(255, 244, 237, 0);
+	border-color: rgba(255, 255, 255, 0);
 	border-left-color: #ffffff;
 	border-width: 15px;
 	margin-top: -15px;

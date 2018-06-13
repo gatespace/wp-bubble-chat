@@ -425,6 +425,15 @@ class WP_Bubble_Chat {
 		 */
 		$size = apply_filters( 'wpbc_avatar_size', $this->size_name );
 
+		// Avatar width.
+		/**
+		 * Filters the avatar image with.
+		 *
+		 * @param int $size_w Width of avatar image. Default '50'.
+		 */
+
+		$width = apply_filters( 'wpbc_avatar_width', $this->size_w );
+
 		// Avatar image.
 		$avatar_img = $this->wpbc_avatar_image( $icon, $size );
 
@@ -434,7 +443,7 @@ class WP_Bubble_Chat {
 		// Output.
 		$html  = '';
 		$html .= '<div class="wpbc-outer wpbc-pos-' . $pos . '">' . "\n";
-		$html .= '<div class="wpbc-avatar">' . "\n";
+		$html .= '<div class="wpbc-avatar" style="width: ' . $width . 'px;">' . "\n";
 		$html .= '<div class="wpbc-avatar-image">' . $avatar_img . '</div>' . "\n";
 		$html .= '<div class="wpbc-avatar-name">' . $avatar_name . '</div>' . "\n";
 		$html .= '</div>' . "\n";
