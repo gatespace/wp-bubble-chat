@@ -242,7 +242,7 @@ class WP_Bubble_Chat {
 		 */
 		$value = get_post_meta( $post->ID, $this->meta_key, true );
 
-		$image_class = 'wpbc_upload_image_button button';
+		$image_class = 'wpbc_upload_image_button';
 		$image_item  = esc_html__( 'Upload image', 'wp-bubble-chat' );
 		$image_size  = 'thumbnail';
 		$display     = 'none';
@@ -255,9 +255,9 @@ class WP_Bubble_Chat {
 
 		echo '
 		<div>
-			<a href="#" class="' . sanitize_html_class( $image_class ) . '">' . wp_kses_post( $image_item ) . '</a>
+			<a href="#" id="' . sanitize_html_class( $image_class ) . '" class="button">' . wp_kses_post( $image_item ) . '</a>
 			<input type="hidden" name="' . esc_attr( $this->meta_key ) . '" id="' . esc_attr( $this->meta_key ) . '" value="' . esc_attr( $value ) . '" />
-			<a href="#" class="wpbc_remove_image_button" style="display:inline-block;display:' . esc_attr( $display ) . '">' . esc_html__( 'Remove avatar image', 'wp-bubble-chat' ) . '</a>
+			<a href="#" id="wpbc_remove_image_button" style="display:inline-block;display:' . esc_attr( $display ) . '">' . esc_html__( 'Remove avatar image', 'wp-bubble-chat' ) . '</a>
 		</div>';
 
 	}
@@ -277,6 +277,11 @@ class WP_Bubble_Chat {
 			$this->version,
 			false
 		);
+		$translation_array = array(
+			'title_text'  => __( 'Insert image', 'wp-bubble-chat' ),
+			'button_text' => __( 'Use this image', 'wp-bubble-chat' ),
+		);
+		wp_localize_script( 'wp-bubble-chat-uploads', 'wbc_uploads', $translation_array );
 	}
 
 	/**
